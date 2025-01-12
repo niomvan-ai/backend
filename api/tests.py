@@ -70,3 +70,63 @@ class UserAuthTests(TestCase):
         }
         response = self.client.post(self.loginUrl, invalidLoginData)
         self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
+
+class SymptomViewTests(TestCase):
+    def setUp(self):
+        self.client = APIClient()
+        self.url = "/api/symptoms/"
+        self.user = User.objects.create_user(username="testuser", password="password123")
+        self.client.force_authenticate(user=self.user)
+
+    def testSymptomViewWithValidData(self):
+        data = {"symptoms": "fever, cough, sore throat"}
+        response = self.client.post(self.url, data)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertIn("summary", response.data)
+
+    def testSymptomViewWithNoData(self):
+        response = self.client.post(self.url, {})
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertIn("error", response.data)
+
+class SummaryViewTests(TestCase):
+    def setUp(self):
+        self.client = APIClient()
+        self.url = "/api/summary/"
+        self.user = User.objects.create_user(username="testuser", password="password123")
+        self.client.force_authenticate(user=self.user)
+
+    def testSummaryViewWithValidData(self):
+        data = {
+            "symptoms": "fever, cough, sore throat",
+            "doctorRecommendations": "rest, hydration",
+            "caseCondition": "mild"
+        }
+        response = self.client.post(self.url, data)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertIn("summary", response.data)
+
+    def testSummaryViewWithMissingData(self):
+        data = {"symptoms": "fever, cough, sore throat"}
+        response = self.client.post(self.url, data)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertIn("summary", response.data)
+
+class OsteoarthritisViewTests(TestCase):
+    def setUp(self):
+        self.client = APIClient()
+        self.url = "/api/osteoarthritis/"
+        self.user = User.objects.create_user(username="testuser", password="password123")
+        self.client.force_authenticate(user=self.user)
+
+    def testOsteoarthritisViewWithValidData(self):
+        with open("test_image.jpg", "rb") as image:
+            response = self.client.post(self.url, {"images": image}, format="multipart")
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        self.assertIn("case_no", response.data)
+        self.assertIn("files", response.data)
+
+    def testOsteoarthritisViewWithNoData(self):
+        response = self.client.post(self.url, {}, format="multipart")
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertIn("detail", response.data)
