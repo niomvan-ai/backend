@@ -95,7 +95,7 @@ WSGI_APPLICATION = "site_settings.wsgi.application"
 
 DATABASES = {
     "default": dj_database_url.config(
-        default="postgresql://niomvan_ai_db_user:syms9Ht6aca1zVikNI63C65KF9azW3Gm@dpg-ctrp985umphs73ffrf20-a.singapore-postgres.render.com/niomvan_ai_db",
+        default="postgresql://niomvan_ai_db_dt90_user:tqOuQK0zyFM8szOuorrzTpXW9Pl6AwOQ@dpg-cu1nv4l2ng1s73edp7ig-a.oregon-postgres.render.com/niomvan_ai_db_dt90",
         conn_max_age=600
     )
 }
