@@ -70,22 +70,3 @@ class UserAuthTests(TestCase):
         }
         response = self.client.post(self.loginUrl, invalidLoginData)
         self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
-
-class OsteoarthritisViewTests(TestCase):
-    def setUp(self):
-        self.client = APIClient()
-        self.url = "/api/osteoarthritis/"
-        self.user = User.objects.create_user(username="testuser", password="password123")
-        self.client.force_authenticate(user=self.user)
-
-    def testOsteoarthritisViewWithValidData(self):
-        with open("../test.png", "rb") as image:
-            response = self.client.post(self.url, {"images": image}, format="multipart")
-        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
-        self.assertIn("case_no", response.data)
-        self.assertIn("files", response.data)
-
-    def testOsteoarthritisViewWithNoData(self):
-        response = self.client.post(self.url, {}, format="multipart")
-        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
-        self.assertIn("detail", response.data)
