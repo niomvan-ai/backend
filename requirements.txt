@@ -4,5 +4,6 @@ django-cors-headers
 djangorestframework
 djangorestframework-simplejwt
 pydicom
+psycopg2
 google-generativeai
 tensorflow
