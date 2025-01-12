@@ -1,6 +1,6 @@
-from tensorflow.keras.preprocessing.image import img_to_array, load_img# type: ignore
+from tensorflow.keras.preprocessing.image import img_to_array, load_img # type: ignore
 from rest_framework.parsers import MultiPartParser, FormParser
-from tensorflow.keras.models import load_model #type: ignore
+from tensorflow.keras.models import load_model # type: ignore
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework.permissions import IsAuthenticated
 from django.core.files.storage import default_storage
@@ -20,6 +20,7 @@ import numpy as np
 import textwrap
 import pydicom
 import os
+
 def generate_gemini_response(prompt):
     """Generates a response using the Gemini AI model."""
     genai.configure(api_key=os.environ.get("Gemini_API_Key"))
@@ -180,7 +181,7 @@ class OsteoarthritisView(APIView):
         def load_trained_model(path):
             """Loads the pre-trained model."""
             try:
-                model = tf.keras.models.load_model(path, custom_objects={"loss_fn": focal_loss()})
+                model = load_model(path, custom_objects={"loss_fn": focal_loss()})
                 return model
             except Exception as e:
                 raise FileNotFoundError(f"Error loading model: {e}")
