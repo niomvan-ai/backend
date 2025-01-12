@@ -41,6 +41,9 @@ jobs:
         python -m pip install --upgrade pip
         pip install -r requirements.txt
 
+    - name: Set Google API Key
+      run: echo "GOOGLE_API_KEY=AIzaSyCAIdH7VdasjEsI2LcgTp_hZMXcvLXWLuQ" >> $GITHUB_ENV
+
     - name: Run migrations
       env:
         DATABASE_URL: postgresql://niomvan_ai_db_user:syms9Ht6aca1zVikNI63C65KF9azW3Gm@dpg-ctrp985umphs73ffrf20-a.singapore-postgres.render.com/niomvan_ai_db

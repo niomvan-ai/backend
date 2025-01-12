@@ -2,6 +2,7 @@ from django.test import TestCase
 from .models import User
 from rest_framework.test import APIClient
 from rest_framework import status
+import os
 
 # Create your tests here.
 class UserAuthTests(TestCase):
@@ -77,6 +78,7 @@ class SymptomViewTests(TestCase):
         self.url = "/api/symptoms/"
         self.user = User.objects.create_user(username="testuser", password="password123")
         self.client.force_authenticate(user=self.user)
+        os.environ["GOOGLE_API_KEY"] = "your_google_api_key_here"
 
     def testSymptomViewWithValidData(self):
         data = {"symptoms": "fever, cough, sore throat"}
@@ -95,6 +97,7 @@ class SummaryViewTests(TestCase):
         self.url = "/api/summary/"
         self.user = User.objects.create_user(username="testuser", password="password123")
         self.client.force_authenticate(user=self.user)
+        os.environ["GOOGLE_API_KEY"] = "your_google_api_key_here"
 
     def testSummaryViewWithValidData(self):
         data = {
