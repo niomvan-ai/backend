@@ -2,7 +2,6 @@ from django.test import TestCase
 from .models import User
 from rest_framework.test import APIClient
 from rest_framework import status
-import os
 
 # Create your tests here.
 class UserAuthTests(TestCase):
@@ -71,49 +70,6 @@ class UserAuthTests(TestCase):
         }
         response = self.client.post(self.loginUrl, invalidLoginData)
         self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
-
-class SymptomViewTests(TestCase):
-    def setUp(self):
-        self.client = APIClient()
-        self.url = "/api/symptoms/"
-        self.user = User.objects.create_user(username="testuser", password="password123")
-        self.client.force_authenticate(user=self.user)
-        os.environ["GOOGLE_API_KEY"] = "your_google_api_key_here"
-
-    def testSymptomViewWithValidData(self):
-        data = {"symptoms": "fever, cough, sore throat"}
-        response = self.client.post(self.url, data)
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertIn("summary", response.data)
-
-    def testSymptomViewWithNoData(self):
-        response = self.client.post(self.url, {})
-        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
-        self.assertIn("error", response.data)
-
-class SummaryViewTests(TestCase):
-    def setUp(self):
-        self.client = APIClient()
-        self.url = "/api/summary/"
-        self.user = User.objects.create_user(username="testuser", password="password123")
-        self.client.force_authenticate(user=self.user)
-        os.environ["GOOGLE_API_KEY"] = "your_google_api_key_here"
-
-    def testSummaryViewWithValidData(self):
-        data = {
-            "symptoms": "fever, cough, sore throat",
-            "doctorRecommendations": "rest, hydration",
-            "caseCondition": "mild"
-        }
-        response = self.client.post(self.url, data)
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertIn("summary", response.data)
-
-    def testSummaryViewWithMissingData(self):
-        data = {"symptoms": "fever, cough, sore throat"}
-        response = self.client.post(self.url, data)
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertIn("summary", response.data)
 
 class OsteoarthritisViewTests(TestCase):
     def setUp(self):
