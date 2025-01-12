@@ -1,0 +1,54 @@
+name: Django CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:13
+        env:
+          POSTGRES_USER: niomvan_ai_db_user
+          POSTGRES_PASSWORD: syms9Ht6aca1zVikNI63C65KF9azW3Gm
+          POSTGRES_DB: niomvan.ai_db
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.9'
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+
+    - name: Run migrations
+      env:
+        DATABASE_URL: postgresql://niomvan_ai_db_user:syms9Ht6aca1zVikNI63C65KF9azW3Gm@dpg-ctrp985umphs73ffrf20-a.singapore-postgres.render.com/niomvan_ai_db
+      run: |
+        python manage.py migrate
+
+    - name: Run tests
+      env:
+        DATABASE_URL: postgresql://niomvan_ai_db_user:syms9Ht6aca1zVikNI63C65KF9azW3Gm@dpg-ctrp985umphs73ffrf20-a.singapore-postgres.render.com/niomvan_ai_db
+      run: |
+        python manage.py test
