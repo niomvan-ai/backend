@@ -7,3 +7,4 @@ pydicom
 psycopg2
 google-generativeai
 tensorflow
+pillow
