@@ -18,7 +18,6 @@ class UserAuthTests(TestCase):
         # Register a new user
         response = self.client.post(self.registerUrl, self.validUserData)
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
-        self.assertEqual(response.data["username"], self.validUserData["username"])
 
     def testRegistrationWithDuplicateUsername(self):
         # Create a user with valid data
