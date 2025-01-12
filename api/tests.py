@@ -79,7 +79,7 @@ class OsteoarthritisViewTests(TestCase):
         self.client.force_authenticate(user=self.user)
 
     def testOsteoarthritisViewWithValidData(self):
-        with open("test_image.jpg", "rb") as image:
+        with open("../test.png", "rb") as image:
             response = self.client.post(self.url, {"images": image}, format="multipart")
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         self.assertIn("case_no", response.data)
