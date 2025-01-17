@@ -1,1 +1,1 @@
-web: python manage.py runserver 0.0.0.0:$PORT
+gunicorn site_settings.wsgi --bind 0.0.0.0:$PORT
