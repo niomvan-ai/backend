@@ -5,9 +5,5 @@
     },
     "deploy": {
         "startCommand": "python manage.py migrate && python manage.py collectstatic --noinput && gunicorn site_settings.wsgi"
-    },
-    "env": {
-        "TF_CPP_MIN_LOG_LEVEL": "3",
-        "TF_ENABLE_ONEDNN_OPTS": "0"
     }
 }
