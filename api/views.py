@@ -23,7 +23,7 @@ import os
 
 def generate_gemini_response(prompt):
     """Generates a response using the Gemini AI model."""
-    genai.configure(api_key=os.environ.get("Gemini_API_Key"))
+    genai.configure(api_key="AIzaSyCAIdH7VdasjEsI2LcgTp_hZMXcvLXWLuQ")
     model = genai.GenerativeModel("gemini-pro")
     chat = model.start_chat(history=[])
     response = chat.send_message(prompt)
