@@ -2,6 +2,7 @@ absl-py
 annotated-types
 asgiref
 astunparse
+boto3
 cachetools
 certifi
 charset-normalizer
@@ -9,6 +10,8 @@ colorama
 dj-database-url
 Django
 django-cors-headers
+django-storages
+django-cloudinary-storage
 djangorestframework
 djangorestframework-simplejwt
 flatbuffers
@@ -69,3 +72,4 @@ uritemplate
 urllib3
 Werkzeug
 wrapt
+google-cloud-storage
