@@ -30,9 +30,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = "django-insecure-nma=xi6x2p-crjg^ifqqkapyu1qjd0l=+wn)-rijk_o%$!k3w_"
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = ["*"]
+ALLOWED_HOSTS = ["your-railway-app-url"]
 
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": (
@@ -99,7 +99,7 @@ WSGI_APPLICATION = "site_settings.wsgi.application"
 
 DATABASES = {
     "default": dj_database_url.config(
-        default="postgresql://niomvan_ai_db_dt90_user:tqOuQK0zyFM8szOuorrzTpXW9Pl6AwOQ@dpg-cu1nv4l2ng1s73edp7ig-a.oregon-postgres.render.com/niomvan_ai_db_dt90",
+        default=os.getenv("DATABASE_URL"),
         conn_max_age=600
     )
 }
