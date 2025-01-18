@@ -15,6 +15,10 @@ from datetime import timedelta
 import dj_database_url
 import os
 
+# Disable TensorFlow GPU and oneDNN optimizations
+os.environ["TF_CPP_MIN_LOG_LEVEL"] = "3"
+os.environ["TF_ENABLE_ONEDNN_OPTS"] = "0"
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -150,5 +154,4 @@ AUTH_USER_MODEL = 'api.User'
 # Media files
 MEDIA_URL = "/media/" 
 MEDIA_ROOT = os.path.join(BASE_DIR, "media") 
-
 STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
