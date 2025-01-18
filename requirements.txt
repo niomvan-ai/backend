@@ -15,7 +15,7 @@ flatbuffers
 gast
 google-ai-generativelanguage
 google-api-core
-google-api-python-client=
+google-api-python-client
 google-auth
 google-auth-httplib2
 google-generativeai
