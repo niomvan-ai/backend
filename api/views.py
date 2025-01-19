@@ -136,9 +136,6 @@ class OsteoarthritisView(APIView):
                     status=status.HTTP_400_BAD_REQUEST
                 )
 
-            file_path = os.path.join(settings.BASE_DIR, "media", file_path)
-            file_path = os.path.normpath(file_path)
-
             # Predict the case
             case = self.predict_case(file_path)
 
