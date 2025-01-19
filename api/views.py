@@ -28,7 +28,8 @@ import cloudinary.uploader
 cloudinary.config(
     cloud_name=os.getenv('CLOUDINARY_CLOUD_NAME'),
     api_key=os.getenv('CLOUDINARY_API_KEY'),
-    api_secret=os.getenv('CLOUDINARY_API_SECRET')
+    api_secret=os.getenv('CLOUDINARY_API_SECRET'),
+    secure=True
 )
 
 def generate_gemini_response(prompt):
@@ -177,7 +178,7 @@ class OsteoarthritisView(APIView):
 
         # Save the converted file to Cloudinary
         png_file_name = f'{file_name}.png'
-        response = cloudinary.uploader.upload(png_io, public_id=png_file_name, resource_type="image")
+        response = cloudinary.uploader.upload(png_io)
         file_url = response['secure_url']
 
         return file_url
