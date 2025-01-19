@@ -20,6 +20,7 @@ import numpy as np
 import textwrap
 import pydicom
 import os
+import requests
 
 def generate_gemini_response(prompt):
     """Generates a response using the Gemini AI model."""
