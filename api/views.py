@@ -128,8 +128,8 @@ class OsteoarthritisView(APIView):
 
             # Process and convert the file
             try:
-                file_path = self.process_file(image)
-                saved_files.append(file_path)
+                file_url = self.process_file(image)
+                saved_files.append(file_url)
             except Exception as e:
                 return Response(
                     {"detail": f"Failed to process {image.name}: {str(e)}"},
@@ -137,7 +137,7 @@ class OsteoarthritisView(APIView):
                 )
 
             # Predict the case
-            case = self.predict_case(file_path)
+            case = self.predict_case(file_url)
 
         return Response(
             {"case_no": case, "files": saved_files},
@@ -145,7 +145,7 @@ class OsteoarthritisView(APIView):
         )
 
     def process_file(self, file):
-        """Converts the uploaded file to PNG and saves it."""
+        """Converts the uploaded file to PNG and saves it to Cloudinary."""
         # Get the file name and extension
         file_name, file_extension = os.path.splitext(file.name)
         file_extension = file_extension.lower()
@@ -165,13 +165,13 @@ class OsteoarthritisView(APIView):
         image.save(png_io, format='PNG')
         png_io.seek(0)
 
-        # Save the converted file
+        # Save the converted file to Cloudinary
         png_file_name = f'{file_name}.png'
         file_path = default_storage.save(f'media/{png_file_name}', png_io)
 
         return file_path
-    
-    def predict_case(self, image_path):
+
+    def predict_case(self, file_url):
         def focal_loss(gamma=2.0, alpha=0.25):
             """Defines the focal loss function."""
             def loss_fn(y_true, y_pred):
@@ -190,10 +190,12 @@ class OsteoarthritisView(APIView):
             except Exception as e:
                 raise FileNotFoundError(f"Error loading model: {e}")
 
-        def process_image(image_path):
+        def process_image(file_url):
             """Preprocesses the image for model input."""
             try:
-                img = load_img(image_path, target_size=(300, 300))
+                response = requests.get(file_url)
+                img = Image.open(BytesIO(response.content))
+                img = img.resize((300, 300))
                 x = img_to_array(img) / 255.0
                 x = np.expand_dims(x, axis=0)
                 return x
@@ -202,7 +204,7 @@ class OsteoarthritisView(APIView):
 
         try:
             # Load and preprocess the image
-            image = process_image(image_path)
+            image = process_image(file_url)
             # Load the model
             model = load_trained_model("./trained_model.h5")
             # Make prediction
