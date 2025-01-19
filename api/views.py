@@ -21,6 +21,7 @@ import textwrap
 import pydicom
 import os
 import requests
+import cloudinary.uploader
 
 def generate_gemini_response(prompt):
     """Generates a response using the Gemini AI model."""
@@ -168,9 +169,10 @@ class OsteoarthritisView(APIView):
 
         # Save the converted file to Cloudinary
         png_file_name = f'{file_name}.png'
-        file_path = default_storage.save(f'media/{png_file_name}', png_io)
+        response = cloudinary.uploader.upload(png_io, public_id=png_file_name, resource_type="image")
+        file_url = response['secure_url']
 
-        return file_path
+        return file_url
 
     def predict_case(self, file_url):
         def focal_loss(gamma=2.0, alpha=0.25):
