@@ -21,7 +21,15 @@ import textwrap
 import pydicom
 import os
 import requests
+import cloudinary
 import cloudinary.uploader
+
+# Ensure Cloudinary is configured with the environment variables
+cloudinary.config(
+    cloud_name=os.getenv('CLOUDINARY_CLOUD_NAME'),
+    api_key=os.getenv('CLOUDINARY_API_KEY'),
+    api_secret=os.getenv('CLOUDINARY_API_SECRET')
+)
 
 def generate_gemini_response(prompt):
     """Generates a response using the Gemini AI model."""
